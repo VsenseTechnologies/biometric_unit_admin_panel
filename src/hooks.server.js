@@ -4,7 +4,7 @@ export const handle = async ({ event, resolve }) => {
     const { cookies, url } = event;
 
     // List of protected URLs
-    const blockedUrls = ['/collegelist', '/manageuser'];
+    const blockedUrls = ['/CollegeList', '/manageuser'];
 
     // Check if the current URL is in the list of blocked URLs
     if (blockedUrls.includes(url.pathname)) {
@@ -14,7 +14,7 @@ export const handle = async ({ event, resolve }) => {
         // If no token is found, redirect to login
         if (!token) {
             console.log('No token found, redirecting to login.');
-            throw redirect(302, '/login');
+            throw redirect(302, '/LoginPage');
         }
     }
 

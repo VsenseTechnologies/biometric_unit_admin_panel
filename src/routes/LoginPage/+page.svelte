@@ -28,7 +28,7 @@
 
             if (response.ok) {
                 // Redirect to the college list page on successful login
-                await goto("/collegelist");
+                await goto("/CollegeList");
             } else {
                 // Handle error response
                 const jsonResponse = await response.json();

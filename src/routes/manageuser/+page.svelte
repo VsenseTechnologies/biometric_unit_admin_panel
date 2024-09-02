@@ -43,7 +43,7 @@
             const response = await fetch("https://go-fingerprint.onrender.com/admin/giveaccess", {
                 method: "POST",
                 credentials: "include",
-                body: JSON.stringify({ email, username: selectedCollege, password }),
+                body: JSON.stringify({ email, user_name: selectedCollege, password }),
             });
 
             if (response.ok) {
@@ -141,8 +141,8 @@
                     class="w-full border rounded-lg py-3 px-4 text-gray-700 text-lg focus:outline-none focus:ring-2 focus:ring-gray-600"
                 >
                     <option value="" disabled>Select a college</option>
-                    {#each users as { username }}
-                        <option value={username}>{username}</option>
+                    {#each users as { user_name }}
+                        <option value={user_name}>{user_name}</option>
                     {/each}
                 </select>
             </div>
