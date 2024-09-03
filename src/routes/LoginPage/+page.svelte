@@ -2,7 +2,7 @@
     import { goto } from "$app/navigation";
     import Errormessage from "../../lib/errormessage.svelte";
 
-    // Meaningful variable names
+    // State variables
     let user_name = '';
     let password = '';
     let errorMessage = '';
@@ -20,10 +20,8 @@
             const response = await fetch("https://go-fingerprint.onrender.com/admin/login", {
                 method: "POST",
                 credentials: "include",
-                body: JSON.stringify({
-                    user_name,
-                    password,
-                }),
+              
+                body: JSON.stringify({ user_name, password }),
             });
 
             if (response.ok) {

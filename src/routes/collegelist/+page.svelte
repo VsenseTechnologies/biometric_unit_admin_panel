@@ -29,19 +29,15 @@
                 const data = await response.json();
                 colleges = data['data'];
                 noCollegesAvailable = colleges.length === 0;
-                console.log(noCollegesAvailable);
                 isAddCollegeModalVisible = false;
             } else {
                 const errorData = await response.json();
-                console.error("Error fetching users:", errorData['message']);
+                console.error("Error fetching colleges:", errorData['message']);
             }
         } catch (error) {
-            console.error("Error fetching users:", error);
+            console.error("Error fetching colleges:", error);
         } finally {
             isLoading = false;
-            if(colleges === null){
-                noCollegesAvailable = true;
-            }
         }
     };
 
@@ -57,7 +53,6 @@
             });
 
             if (response.ok) {
-                await response.json();
                 newCollegeUsername = '';
                 newCollegePassword = '';
                 isAddCollegeModalVisible = false;
@@ -66,19 +61,17 @@
                 await fetchColleges();
             } else {
                 const errorData = await response.json();
-                console.error("Error creating user:", errorData["message"]);
+                console.error("Error creating college user:", errorData["message"]);
             }
         } catch (error) {
-            console.error("Error creating user:", error);
+            console.error("Error creating college user:", error);
         } finally {
             isCollageAddedLoading = false;
         }
     };
 
     // Initialize the component by fetching the colleges
-    onMount(() => {
-        fetchColleges();
-    });
+    onMount(fetchColleges);
 
     // Toggle the visibility of the add college modal
     const toggleAddCollegeModal = () => {
@@ -94,7 +87,7 @@
             <div class="spinner"></div>
         </div>
     {:else if noCollegesAvailable}
-        <div class="fixed inset-96 flex flex-col items-center justify-center text-center">
+        <div class="fixed inset-0 flex flex-col items-center justify-center text-center">
             <i class="fa-solid fa-database text-8xl mb-4"></i>
             <h1 class="text-4xl">No colleges available</h1>
         </div>
@@ -103,7 +96,7 @@
             {#each colleges as college}
                 <div class="w-full sm:w-1/2 lg:w-1/4 p-4">
                     <div class="border rounded-2xl p-8 bg-white shadow-xl flex flex-col h-72">
-                        <span class="text-start mt-2 text-2xl font-semibold">{college["user_name"]}</span>
+                        <span class="text-start mt-2 text-2xl font-semibold">{college.user_name}</span>
                         <div class="flex-grow"></div>
                         <button
                             class="text-xl p-3 rounded-lg bg-black text-white font-medium self-end"
@@ -118,7 +111,6 @@
     {/if}
 </div>
 
-
 <button
     class="w-16 h-16 bg-black fixed bottom-12 right-8 text-white text-3xl font-medium rounded-full hover:text-white hover:bg-black duration-700 shadow-xl flex items-center justify-center"
     on:click={toggleAddCollegeModal}
@@ -126,12 +118,10 @@
     <i class="fas fa-plus"></i>
 </button>
 
-
 {#if isAddCollegeModalVisible}
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" transition:fade>
         <div class="max-w-lg w-full bg-white rounded-3xl p-8 shadow-lg relative">
             <h1 class="text-center text-2xl py-4 mb-8 font-bold">Add New College</h1>
-
             <form on:submit={createCollegeUser}>
                 <div class="mb-6">
                     <label class="block text-black text-xl font-semibold mb-2 text-left px-2" for="username">Username</label>
@@ -176,28 +166,28 @@
     </div>
 {/if}
 
-<!-- Success Message -->
 {#if successMessage}
     <Successmessage successMessage={successMessage}/>
 {/if}
 
 <style>
+    .spinner, .button-spinner {
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
     .spinner {
         border: 8px solid rgba(0, 0, 0, 0);
-        border-radius: 50%;
         border-top: 8px solid black;
         width: 64px;
         height: 64px;
-        animation: spin 1s linear infinite;
     }
-
+    
     .button-spinner {
         border: 4px solid rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
         border-top: 4px solid #ffffff;
         width: 24px;
         height: 24px;
-        animation: spin 1s linear infinite;
     }
 
     @keyframes spin {

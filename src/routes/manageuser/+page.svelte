@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { fade } from "svelte/transition";
 
+    // Component state
     let email = '';
     let password = '';
     let selectedCollege = '';
@@ -12,6 +13,7 @@
     let notification = '';
     let isNotificationVisible = false;
 
+    // Fetch users from the server
     const fetchUsers = async () => {
         isLoading = true;
         try {
@@ -37,6 +39,7 @@
         }
     };
 
+    // Request access to a user
     const requestAccess = async () => {
         isSubmitting = true;
         try {
@@ -66,49 +69,52 @@
         }
     };
 
+    // Reset form fields
     const resetForm = () => {
         email = '';
         password = '';
         selectedCollege = '';
     };
 
+    // Fetch users when component mounts
     onMount(() => {
         fetchUsers();
     });
 </script>
 
 <style>
-    .spinner {
+    /* Spinner styles */
+    .spinner, .button-spinner {
         border: 4px solid rgba(255, 255, 255, 0.3);
-        border-left-color: black;
         border-radius: 50%;
         width: 24px;
         height: 24px;
         animation: spin 1s linear infinite;
+    }
+    .spinner {
+        border-left-color: black;
     }
     .button-spinner {
-        border: 4px solid rgba(255, 255, 255, 0.3);
         border-left-color: white;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        animation: spin 1s linear infinite;
     }
 
+    /* Spin animation */
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
 </style>
 
 <div class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-    <div class="w-full max-w-lg h-auto bg-white rounded-3xl p-6 shadow-2xl">
+    <div class="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl">
         <h1 class="text-center text-2xl font-bold mb-8">Give Access to User</h1>
 
+        <!-- Loading Spinner -->
         {#if isLoading}
             <div class="flex items-center justify-center">
                 <div class="spinner"></div>
             </div>
         {:else}
+            <!-- Form Section -->
             <div class="mb-6">
                 <label class="block text-black text-xl font-medium mb-2" for="email">Email ID</label>
                 <input 
@@ -131,7 +137,6 @@
                     class="w-full border rounded-lg py-3 px-4 text-gray-700 text-lg focus:outline-none focus:ring-2 focus:ring-gray-600"
                 />
             </div>
-
             <div class="mb-6">
                 <label class="block text-black text-xl font-medium mb-2" for="college">Select College</label>
                 <select 
@@ -147,10 +152,11 @@
                 </select>
             </div>
 
+            <!-- Submit Button -->
             <div>
                 <button 
                     on:click={requestAccess}
-                    class="w-full bg-black text-white font-semibold rounded-lg py-3 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600" 
+                    class="w-full bg-black text-white font-semibold rounded-lg py-3 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600"
                 >
                     <div class="flex justify-center items-center">
                         {#if isSubmitting}
@@ -163,15 +169,16 @@
             </div>
         {/if}
 
+        <!-- Error Message -->
         {#if message}
             <div class="mt-4 text-center text-red-600">{message}</div>
         {/if}
     </div>
 </div>
 
+<!-- Notification Message -->
 {#if isNotificationVisible}
     <div class="fixed bottom-5 right-5 bg-black text-white py-2 px-4 rounded-lg shadow-lg z-50 transition-opacity duration-500" transition:fade>
         {notification}
     </div>
 {/if}
-

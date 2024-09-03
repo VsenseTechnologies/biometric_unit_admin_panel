@@ -2,20 +2,21 @@
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
 
-  let unitId = ''; // Variable for user input in delete modal
-  let createUnitId = ''; // Variable for creating a new unit ID
+  let unitId = '';
+  let createUnitId = '';
   let tableData = [];
   let isLoading = true;
   let showDeleteModal = false;
   let showCreateModal = false;
   let responseMessage = '';
-  let isCreating = false; // Track loading state for the "Add Unit" button
-  let unitIdToDelete = ''; // Track unit ID for deletion
-  let deleteErrorMessage = ''; // Error message for invalid delete input
+  let isCreating = false;
+  let unitIdToDelete = '';
+  let deleteErrorMessage = '';
   let isMachineNotPresent = false;
   export let data;
 
   const fetchTableData = async () => {
+    isLoading = true;
     try {
       const response = await fetch("https://go-fingerprint.onrender.com/admin/getmachines", {
         method: "POST",
@@ -25,6 +26,7 @@
       const result = await response.json();
       if (response.ok) {
         tableData = result['data'];
+        isMachineNotPresent = !tableData.length;
       } else {
         responseMessage = result['message'] || 'Unexpected error';
       }
@@ -32,15 +34,11 @@
       responseMessage = 'Fetch error: ' + error.message;
     } finally {
       isLoading = false;
-      if(tableData === null) {
-        isMachineNotPresent = true;
-      }
     }
   };
 
   const addMachine = async () => {
     isCreating = true;
-
     try {
       const response = await fetch("https://go-fingerprint.onrender.com/admin/addmachine", {
         method: "POST",
@@ -52,10 +50,8 @@
         showCreateModal = false;
         createUnitId = '';
         await fetchTableData();
-        window.location.reload(); // Refresh the page
       } else {
         responseMessage = result.message || 'Unexpected error';
-        console.log(responseMessage)
       }
     } catch (error) {
       responseMessage = 'Fetch error: ' + error.message;
@@ -69,9 +65,7 @@
       deleteErrorMessage = 'Unit ID does not match. Please enter the correct ID.';
       return;
     }
-
     isLoading = true;
-
     try {
       const response = await fetch("https://go-fingerprint.onrender.com/admin/deletemachine", {
         method: "POST",
@@ -79,14 +73,12 @@
         body: JSON.stringify({ unit_id: unitIdToDelete, online: false }),
       });
       const result = await response.json();
-      console.log('Delete response:', result); // Debugging
       if (response.ok) {
         showDeleteModal = false;
         unitIdToDelete = '';
         unitId = '';
         deleteErrorMessage = '';
         await fetchTableData();
-        window.location.reload(); // Refresh the page
       } else {
         responseMessage = result.message || 'Unexpected error';
       }
@@ -97,9 +89,7 @@
     }
   };
 
-  onMount(() => {
-    fetchTableData();
-  });
+  onMount(fetchTableData);
 
   const toggleModal = (modalType) => {
     if (modalType === 'delete') {
@@ -117,18 +107,18 @@
 
 <div class="overflow-x-auto p-6 pt-32">
   <div class="max-h-screen overflow-y-auto">
-{#if isLoading}
-  <div class="fixed inset-0 flex items-center justify-center">
-      <div class="spinner-black"></div>
-  </div>
-{:else if isMachineNotPresent}
-  <div class="fixed inset-96 flex flex-col items-center justify-center text-center">
-    <i class="fa-solid fa-gears text-8xl mb-4"></i>
-    <h1 class="text-4xl">No Machines available</h1>
-  </div>
-{:else}
+    {#if isLoading}
+      <div class="fixed inset-0 flex items-center justify-center">
+        <div class="spinner-black"></div>
+      </div>
+    {:else if isMachineNotPresent}
+      <div class="fixed inset-96 flex flex-col items-center justify-center text-center">
+        <i class="fa-solid fa-gears text-8xl mb-4"></i>
+        <h1 class="text-4xl">No Machines available</h1>
+      </div>
+    {:else}
       <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden" transition:fade>
-        <thead class="bg-black text-white top-0">
+        <thead class="bg-black text-white">
           <tr>
             <th class="py-3 px-4">Unit ID</th>
             <th class="py-3 px-4">User ID</th>
@@ -172,7 +162,7 @@
         <p class="text-gray-700 mb-4">Are you sure you want to delete unit ID: <strong>{unitIdToDelete}</strong>?</p>
         <p class="text-gray-600 mb-4">Type the unit ID below to confirm:</p>
         <input
-          bind:value={unitId} 
+          bind:value={unitId}
           name="unitIdInput"
           type="text"
           placeholder="Enter Unit ID"
@@ -211,7 +201,7 @@
         <div>
           <label class="block text-gray-700 font-semibold mb-2" for="unitId">Unit ID</label>
           <input
-            bind:value={createUnitId} 
+            bind:value={createUnitId}
             name="unitId"
             type="text"
             placeholder="Enter Unit ID"
@@ -243,34 +233,34 @@
 </div>
 
 <style>
+  .spinner-black, .spinner-add, .spinner-delete {
+    border-radius: 50%;
+    border-top: 4px solid;
+    animation: spin 1s linear infinite;
+  }
+
   .spinner-black {
     border: 8px solid rgba(0, 0, 0, 0);
-    border-radius: 50%;
-    border-top: 8px solid black;
+    border-top-color: black;
     width: 64px;
     height: 64px;
-    animation: spin 1s linear infinite;
   }
 
   .spinner-add {
     border: 4px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
-    border-top: 4px solid white; /* Spinner color adjusted for visibility */
-    width: 24px; /* Adjust the size as needed */
-    height: 24px; /* Adjust the size as needed */
-    animation: spin 0.8s linear infinite; /* Position it absolutely within the button */
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%); /* Center the spinner */
+    border-top-color: white;
+    width: 24px;
+    height: 24px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .spinner-delete {
     border: 4px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
-    border-top: 4px solid white;
+    border-top-color: white;
     width: 20px;
     height: 20px;
-    animation: spin 0.8s linear infinite;
   }
 
   @keyframes spin {
@@ -284,8 +274,8 @@
   }
 
   thead th {
-    border-bottom: 2px solid #e5e7eb; /* Light gray border for the header */
-    background-color: #111827; /* Dark background color for the header */
+    border-bottom: 2px solid #e5e7eb;
+    background-color: #111827;
   }
 
   tbody tr {
@@ -293,14 +283,14 @@
   }
 
   tbody tr:hover {
-    background-color: #f3f4f6; /* Light gray background color for row hover */
+    background-color: #f3f4f6;
   }
 
   td {
-    border-right: 1px solid #e5e7eb; /* Light gray border for cells */
+    border-right: 1px solid #e5e7eb;
   }
 
   td:last-child {
-    border-right: none; /* Remove right border for the last cell in each row */
+    border-right: none;
   }
 </style>
