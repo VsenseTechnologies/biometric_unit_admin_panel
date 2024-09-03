@@ -55,6 +55,7 @@
         window.location.reload(); // Refresh the page
       } else {
         responseMessage = result.message || 'Unexpected error';
+        console.log(responseMessage)
       }
     } catch (error) {
       responseMessage = 'Fetch error: ' + error.message;
