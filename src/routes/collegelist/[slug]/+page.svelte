@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-    import { machines } from "../../../lib/urls.js";
+    import { addmachine, deletemachine, machines } from "../../../lib/urls.js";
 
 
   let unitId = '';
@@ -47,7 +47,7 @@
   const addMachine = async () => {
     isCreating = true;
     try {
-      const response = await fetch("https://go-fingerprint.onrender.com/admin/addmachine", {
+      const response = await fetch(addmachine, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({ unit_id: createUnitId, user_id: data.slug }),
@@ -76,7 +76,7 @@
     }
     isLoading = true;
     try {
-      const response = await fetch("https://go-fingerprint.onrender.com/admin/deletemachine", {
+      const response = await fetch(deletemachine, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({ unit_id: unitIdToDelete, online: false }),

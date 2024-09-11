@@ -4,7 +4,7 @@
     import { fade } from "svelte/transition";
     import Errormessage from "../../lib/errormessage.svelte";
     import Successmessage from "../../lib/successmessage.svelte";
-    import {collegelist} from "../../lib/urls.js";
+    import {collegelist, collegeregister} from "../../lib/urls.js";
 
     // State variables
     let colleges = [];
@@ -47,7 +47,7 @@
         event.preventDefault();
         isCollageAddedLoading = true;
         try {
-            const response = await fetch("https://go-fingerprint.onrender.com/users/register", {
+            const response = await fetch(collegeregister, {
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify({ user_name: newCollegeUsername, password: newCollegePassword }),
