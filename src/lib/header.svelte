@@ -56,15 +56,7 @@
               Manage User
             </button>
           </li>
-          <li>
-            <button
-              class="flex items-center text-lg text-black text-left rounded-lg hover:text-white hover:bg-black duration-300 py-3 px-4 font-semibold w-full"
-              on:click={() => {goto('/setting'); isDrawerOpen = false;}}
-            >
-              <i class="fa-solid fa-cogs mr-3"></i> <!-- Settings Icon -->
-              Settings
-            </button>
-          </li>
+         
           <li>
             <button
               class="flex items-center text-lg text-black text-left rounded-lg hover:text-white hover:bg-black duration-300 py-3 px-4 font-semibold w-full"

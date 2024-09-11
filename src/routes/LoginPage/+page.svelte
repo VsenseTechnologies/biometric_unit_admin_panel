@@ -1,6 +1,7 @@
 <script>
     import { goto } from "$app/navigation";
     import Errormessage from "../../lib/errormessage.svelte";
+    import {login} from "../../lib/urls.js";
 
     // State variables
     let user_name = '';
@@ -17,7 +18,7 @@
         errorMessage = '';
 
         try {
-            const response = await fetch("https://go-fingerprint.onrender.com/admin/login", {
+            const response = await fetch(login, {
                 method: "POST",
                 credentials: "include",
               

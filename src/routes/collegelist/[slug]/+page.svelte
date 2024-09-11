@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+    import { machines } from "../../../lib/urls.js";
+
 
   let unitId = '';
   let createUnitId = '';
@@ -18,17 +20,22 @@
   const fetchTableData = async () => {
     isLoading = true;
     try {
-      const response = await fetch("https://go-fingerprint.onrender.com/admin/getmachines", {
+      const response = await fetch(machines, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({ user_id: data.slug }),
       });
       const result = await response.json();
       if (response.ok) {
-        tableData = result['data'];
+         //tableData = result['data'];
+         tableData = Array.isArray(result['data']) ? result['data'] : [];
         isMachineNotPresent = !tableData.length;
+      
+
+      
       } else {
         responseMessage = result['message'] || 'Unexpected error';
+        
       }
     } catch (error) {
       responseMessage = 'Fetch error: ' + error.message;
@@ -50,8 +57,10 @@
         showCreateModal = false;
         createUnitId = '';
         await fetchTableData();
+       
       } else {
         responseMessage = result.message || 'Unexpected error';
+        
       }
     } catch (error) {
       responseMessage = 'Fetch error: ' + error.message;

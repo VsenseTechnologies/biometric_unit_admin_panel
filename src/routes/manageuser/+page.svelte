@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { fade } from "svelte/transition";
+    import { collegelist, giveaccess } from "../../lib/urls";
 
     // Component state
     let email = '';
@@ -17,7 +18,7 @@
     const fetchUsers = async () => {
         isLoading = true;
         try {
-            const response = await fetch("https://go-fingerprint.onrender.com/admin/getusers", {
+            const response = await fetch(collegelist, {
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify({}),
@@ -36,6 +37,9 @@
             message = "An error occurred. Please try again.";
         } finally {
             isLoading = false;
+            if(users === null){
+                isLoading = true;
+            }
         }
     };
 
@@ -43,7 +47,7 @@
     const requestAccess = async () => {
         isSubmitting = true;
         try {
-            const response = await fetch("https://go-fingerprint.onrender.com/admin/giveaccess", {
+            const response = await fetch(giveaccess, {
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify({ email, user_name: selectedCollege, password }),
@@ -104,8 +108,8 @@
     }
 </style>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-    <div class="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl">
+<div class="min-h-screen flex items-center justify-center bg-gray-50 p-4 border border-red-800">
+    <div class="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl border border-red-800">
         <h1 class="text-center text-2xl font-bold mb-8">Give Access to User</h1>
 
         <!-- Loading Spinner -->

@@ -4,6 +4,7 @@
     import { fade } from "svelte/transition";
     import Errormessage from "../../lib/errormessage.svelte";
     import Successmessage from "../../lib/successmessage.svelte";
+    import {collegelist} from "../../lib/urls.js";
 
     // State variables
     let colleges = [];
@@ -19,7 +20,7 @@
     const fetchColleges = async () => {
         isLoading = true;
         try {
-            const response = await fetch("https://go-fingerprint.onrender.com/admin/getusers", {
+            const response = await fetch(collegelist, {
                 method: "POST",
                 credentials: "include",
                 body: JSON.stringify({}),
@@ -28,7 +29,7 @@
             if (response.ok) {
                 const data = await response.json();
                 colleges = data['data'];
-                noCollegesAvailable = colleges.length === 0;
+                noCollegesAvailable = colleges === null;
                 isAddCollegeModalVisible = false;
             } else {
                 const errorData = await response.json();
@@ -87,7 +88,7 @@
             <div class="spinner"></div>
         </div>
     {:else if noCollegesAvailable}
-        <div class="fixed inset-0 flex flex-col items-center justify-center text-center">
+        <div class="fixed inset-96 flex flex-col items-center justify-center text-center">
             <i class="fa-solid fa-database text-8xl mb-4"></i>
             <h1 class="text-4xl">No colleges available</h1>
         </div>
