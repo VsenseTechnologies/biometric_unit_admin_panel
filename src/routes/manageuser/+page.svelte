@@ -108,8 +108,8 @@
     }
 </style>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50 p-4 border border-red-800">
-    <div class="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl border border-red-800">
+<div class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div class="w-full max-w-lg bg-white rounded-3xl p-6 shadow-2xl ">
         <h1 class="text-center text-2xl font-bold mb-8">Give Access to User</h1>
 
         <!-- Loading Spinner -->
