@@ -21,7 +21,6 @@
             const response = await fetch(login, {
                 method: "POST",
                 credentials: "include",
-              
                 body: JSON.stringify({ user_name, password }),
             });
 
@@ -35,7 +34,7 @@
                 showError = true;
                 setTimeout(() => {
                     showError = false;
-                }, 3000);
+                },3000);
             }
         } catch (error) {
             errorMessage = 'Failed to communicate with the server. Please try again later.';

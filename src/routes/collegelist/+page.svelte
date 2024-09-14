@@ -4,7 +4,7 @@
     import { fade } from "svelte/transition";
     import Errormessage from "../../lib/errormessage.svelte";
     import Successmessage from "../../lib/successmessage.svelte";
-    import {collegelist, collegeregister} from "../../lib/urls.js";
+    import { collegelist, collegeregister } from "../../lib/urls.js";
 
     // State variables
     let colleges = [];
@@ -78,6 +78,11 @@
     const toggleAddCollegeModal = () => {
         isAddCollegeModalVisible = !isAddCollegeModalVisible;
     };
+
+    // Convert input to uppercase
+    const toUpperCase = (event) => {
+        newCollegeUsername = event.target.value.toUpperCase();
+    };
 </script>
 
 <h2 class="text-3xl font-semibold mb-4 text-black px-8 pt-32">College List</h2>
@@ -132,6 +137,7 @@
                         type="text"
                         placeholder="Username"
                         class="shadow border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        on:input={toUpperCase}
                     />
                 </div>
                 <div class="mb-6">
@@ -196,4 +202,3 @@
         100% { transform: rotate(360deg); }
     }
 </style>
-

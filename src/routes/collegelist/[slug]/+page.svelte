@@ -1,8 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-    import { addmachine, deletemachine, machines } from "../../../lib/urls.js";
-
+  import { addmachine, deletemachine, machines } from "../../../lib/urls.js";
 
   let unitId = '';
   let createUnitId = '';
@@ -27,15 +26,10 @@
       });
       const result = await response.json();
       if (response.ok) {
-         //tableData = result['data'];
-         tableData = Array.isArray(result['data']) ? result['data'] : [];
+        tableData = Array.isArray(result['data']) ? result['data'] : [];
         isMachineNotPresent = !tableData.length;
-      
-
-      
       } else {
         responseMessage = result['message'] || 'Unexpected error';
-        
       }
     } catch (error) {
       responseMessage = 'Fetch error: ' + error.message;
@@ -56,11 +50,10 @@
       if (response.ok) {
         showCreateModal = false;
         createUnitId = '';
+        responseMessage = 'Unit added succesfully'; // Clear the responseMessage on success
         await fetchTableData();
-       
       } else {
         responseMessage = result.message || 'Unexpected error';
-        
       }
     } catch (error) {
       responseMessage = 'Fetch error: ' + error.message;
@@ -138,7 +131,7 @@
         <tbody class="text-gray-700">
           {#each tableData as row}
             <tr class="border-b border-gray-200">
-              <td class="py-3 px-4 text-center">{row.unit_id}</td>
+              <td class="py-3 px-4 text-center uppercase">{row.unit_id}</td>
               <td class="py-3 px-4 text-center">{data.slug}</td>
               <td class="py-3 px-4 text-center">
                 <span class={`py-1 px-3 rounded-full text-xs font-semibold ${row.online ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -176,6 +169,7 @@
           type="text"
           placeholder="Enter Unit ID"
           class="w-full p-3 border border-gray-300 rounded-lg text-lg mb-4"
+          on:input={(e) => unitId = e.target.value.toUpperCase()}
         />
         {#if deleteErrorMessage}
           <p class="text-red-500 mb-4">{deleteErrorMessage}</p>
@@ -215,8 +209,12 @@
             type="text"
             placeholder="Enter Unit ID"
             class="w-full p-4 border border-gray-300 rounded-lg text-lg"
+            on:input={(e) => createUnitId = e.target.value.toUpperCase()}
           />
         </div>
+        {#if responseMessage}
+          <p class="text-red-500 text-center">{responseMessage}</p>
+        {/if}
         <div class="flex justify-between">
           <button
             on:click={addMachine}
