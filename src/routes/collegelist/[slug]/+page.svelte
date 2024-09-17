@@ -198,45 +198,48 @@
   {/if}
 
   {#if showCreateModal}
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-6" transition:fade>
-      <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg space-y-6 h-[24rem]">
-        <h1 class="text-2xl font-bold text-center text-gray-800">Create a New Unit ID</h1>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2" for="unitId">Unit ID</label>
-          <input
-            bind:value={createUnitId}
-            name="unitId"
-            type="text"
-            placeholder="Enter Unit ID"
-            class="w-full p-4 border border-gray-300 rounded-lg text-lg"
-            on:input={(e) => createUnitId = e.target.value.toUpperCase()}
-          />
-        </div>
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-6" transition:fade>
+    <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg space-y-6 h-[24rem]">
+      <h1 class="text-2xl font-bold text-center text-gray-800">Create a New Unit ID</h1>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2 " for="unitId">Unit ID</label>
+        <input
+          bind:value={createUnitId}
+          name="unitId"
+          type="text"
+          placeholder="Enter Unit ID"
+          class="w-full p-4 border border-gray-300 rounded-lg text-lg"
+          on:input={(e) => createUnitId = e.target.value.toUpperCase()}
+        />
+      </div>
+      <div class="h-6"> 
         {#if responseMessage}
           <p class="text-red-500 text-center">{responseMessage}</p>
         {/if}
-        <div class="flex justify-between">
-          <button
-            on:click={addMachine}
-            class="relative w-full bg-black text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center"
-            disabled={isCreating}
-          >
-            {#if isCreating}
-              <div class="spinner-add"></div>
-            {:else}
-              <i class="fa fa-plus mr-2"></i> Add Unit
-            {/if}
-          </button>
-        </div>
+      </div>
+      <div class="flex justify-between">
         <button
-          class="w-full bg-white text-black shadow-lg font-bold py-3 px-6 rounded-lg mt-4"
-          on:click={() => showCreateModal = false}
+          on:click={addMachine}
+          class="relative w-full bg-black text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center"
+          disabled={isCreating}
         >
-          Cancel
+          {#if isCreating}
+            <div class="spinner-add"></div>
+          {:else}
+            <i class="fa fa-plus mr-2"></i> Add Unit
+          {/if}
         </button>
       </div>
+      <button
+        class="w-full bg-white text-black shadow-lg font-bold py-3 px-6 rounded-lg mt-4"
+        on:click={() => showCreateModal = false}
+      >
+        Cancel
+      </button>
     </div>
-  {/if}
+  </div>
+{/if}
+
 </div>
 
 <style>
