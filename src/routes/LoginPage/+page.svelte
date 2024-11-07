@@ -20,7 +20,7 @@
         try {
             const response = await fetch(login, {
                 method: "POST",
-                credentials: "include",
+                
                 body: JSON.stringify({ user_name, password }),
             });
 
