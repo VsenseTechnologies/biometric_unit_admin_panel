@@ -50,7 +50,7 @@
       if (response.ok) {
         showCreateModal = false;
         createUnitId = '';
-        responseMessage = 'Unit added succesfully'; // Clear the responseMessage on success
+        //responseMessage = 'Unit added succesfully'; 
         await fetchTableData();
       } else {
         responseMessage = result.message || 'Unexpected error';
