@@ -1,4 +1,4 @@
-let url="https://biometric.http.vsensetech.in";
+let url="https://biometric.http.vsensetech.in"
 export let login = url + "/admin/login";
 export let collegelist = url + "/admin/getusers";
 export let machines  = url + "/admin/getmachines";
