@@ -106,7 +106,7 @@
                         <div class="flex-grow"></div>
                         <button
                             class="text-xl p-3 rounded-lg bg-black text-white font-medium self-end"
-                            on:click={() => goto("/CollegeList/" + college.user_id)}
+                            on:click={() => goto("/collegelist/" + college.user_id)}
                         >
                             Manage
                         </button>

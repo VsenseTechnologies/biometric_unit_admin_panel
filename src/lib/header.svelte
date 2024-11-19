@@ -41,7 +41,7 @@
           <li>
             <button
               class="flex items-center text-lg text-black text-left rounded-lg hover:text-white hover:bg-black duration-300 py-3 px-4 font-semibold w-full"
-              on:click={() => {goto('/CollegeList'); isDrawerOpen = false;}}
+              on:click={() => {goto('/collegelist'); isDrawerOpen = false;}}
             >
               <i class="fa-solid fa-home mr-3"></i> <!-- Home Icon -->
               Home
